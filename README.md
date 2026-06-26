@@ -11,7 +11,7 @@ pinned: false
 
 An AI agent that reads a patient summary, finds candidate clinical trials, and judges each eligibility criterion as **met**, **not met**, or **unknown**, with the evidence it used and an honest "I don't know" when the summary doesn't say.
 
-**Live demo:** _add your URL here after deploying_
+**Live demo:** https://pavankumarkundeti-clinical-trial-matcher.hf.space
 
 > Decision-support prototype built on public ClinicalTrials.gov data. It is not a clinical tool and should not be used for real medical decisions.
 
