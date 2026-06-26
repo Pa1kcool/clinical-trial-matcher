@@ -1,6 +1,5 @@
 ---
 title: Clinical Trial Matcher
-<<<<<<< HEAD
 emoji: 🧬
 colorFrom: blue
 colorTo: indigo
