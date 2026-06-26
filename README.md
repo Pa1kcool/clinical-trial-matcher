@@ -19,7 +19,11 @@ and the agent retrieves real trials, then goes criterion by criterion and tells 
 The thing I care about most: when the summary is silent on a criterion, the agent says **unknown** instead of guessing. For a tool that touches eligibility, a confident wrong answer is worse than an honest "needs a human to check."
 
 ## Demo
-![App Demo](docs/ctmatch.mp4)
+
+
+https://github.com/user-attachments/assets/c4a41299-e044-43f4-a74d-901b74e95047
+
+
 
 ## Screenshots
 
