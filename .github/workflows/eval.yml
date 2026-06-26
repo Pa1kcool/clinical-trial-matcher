@@ -1,0 +1,21 @@
+name: eval-gate
+
+# Evals cost money and call a live model, so they don't run on every push.
+# Weekly + on-demand, using a repo secret for the API key.
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    env:
+      CTMATCH_RUN_EVAL: "1"
+      CTMATCH_ANTHROPIC_API_KEY: ${{ secrets.CTMATCH_ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv python install 3.12
+      - run: uv sync --extra dev
+      - run: uv run pytest tests/test_eval_gate.py -q

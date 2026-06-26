@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clinical Trial Matcher</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --ink: #16242f; --muted: #5b6b78;
+    --line: #e4e9ee; --accent: #0e7490; --accent-dark: #155e75;
+    --met-fg: #15803d; --met-bg: #dcfce7;
+    --no-fg: #b91c1c; --no-bg: #fee2e2;
+    --unk-fg: #b45309; --unk-bg: #fef3c7;
+    --shadow: 0 1px 2px rgba(16,36,47,.06), 0 4px 16px rgba(16,36,47,.05);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+  .eyebrow { color: var(--accent); font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; font-size: 12.5px; }
+  h1 { font-size: 30px; margin: 6px 0 10px; letter-spacing: -.02em; }
+  .lede { color: var(--muted); font-size: 16px; margin: 0 0 14px; }
+  .audience { font-size: 13.5px; color: var(--accent-dark); background: #f0fafd;
+    border: 1px solid #cfeaf2; border-radius: 10px; padding: 9px 13px; margin: 0 0 14px; }
+  .disclaimer { background: #fff8ec; border: 1px solid #f3e2bd; color: #7a5a16;
+    border-radius: 10px; padding: 10px 14px; font-size: 13.5px; margin-bottom: 28px; }
+  .label { font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
+  .samples { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 999px; padding: 7px 14px; font-size: 13px; cursor: pointer;
+    transition: border-color .15s, background .15s; }
+  .chip:hover { border-color: var(--accent); background: #f0fafd; }
+  textarea { width: 100%; min-height: 96px; resize: vertical; border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px; font: inherit; font-size: 15px; background: var(--surface);
+    color: var(--ink); box-shadow: var(--shadow); }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  .actions { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+  button.go { background: var(--accent); color: #fff; border: 0; border-radius: 10px;
+    padding: 11px 20px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .15s; }
+  button.go:hover { background: var(--accent-dark); }
+  button.go:disabled { opacity: .55; cursor: default; }
+  .hint { color: var(--muted); font-size: 13px; }
+  section.block { margin-top: 30px; }
+
+  .status { display: none; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); }
+  .status-head { font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .03em; color: var(--muted); margin-bottom: 12px; }
+  .steps { display: flex; flex-direction: column; gap: 2px; }
+  .stepitem { display: flex; align-items: center; gap: 11px; padding: 6px 0;
+    color: var(--muted); font-size: 14px; transition: color .2s; }
+  .stepitem.active { color: var(--ink); font-weight: 600; }
+  .stepitem.done { color: var(--ink); }
+  .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line);
+    flex: none; display: grid; place-items: center; font-size: 11px; font-weight: 700;
+    color: var(--met-fg); transition: all .2s; }
+  .stepitem.active .dot { border-color: var(--accent); animation: pulse 1s ease-in-out infinite; }
+  .stepitem.done .dot { background: var(--met-bg); border-color: var(--met-bg); }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(14,116,144,.35); } 50% { box-shadow: 0 0 0 5px rgba(14,116,144,0); } }
+
+  .error { display: none; background: var(--no-bg); border: 1px solid #f6caca;
+    color: var(--no-fg); border-radius: 12px; padding: 14px 16px; font-size: 14px; }
+  .summary { font-size: 15px; margin: 0 0 14px; color: var(--ink); }
+  .summary b { color: var(--accent-dark); }
+
+  .legend { background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
+  .legend-title { font-size: 12.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .03em; color: var(--muted); margin-bottom: 10px; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 10px 18px; font-size: 13px;
+    color: var(--ink); align-items: center; }
+  .legend-row + .legend-row { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+  .legend-item { display: inline-flex; align-items: center; gap: 7px; }
+  .legend-item .muted { color: var(--muted); }
+
+  .trial { background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 18px 18px 8px; margin-bottom: 16px; }
+  .trial-head { display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 12px; margin-bottom: 4px; }
+  .trial-title { font-weight: 600; font-size: 15.5px; margin: 0; }
+  .nct a { color: var(--accent); text-decoration: none; font-size: 13px; }
+  .nct a:hover { text-decoration: underline; }
+  .badge { flex: none; font-size: 12px; font-weight: 700; padding: 4px 10px;
+    border-radius: 999px; white-space: nowrap; }
+  .badge.eligible { background: var(--met-bg); color: var(--met-fg); }
+  .badge.review { background: var(--unk-bg); color: var(--unk-fg); }
+  .badge.ineligible { background: var(--no-bg); color: var(--no-fg); }
+  .crit { display: flex; gap: 11px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .icon { flex: none; width: 22px; height: 22px; border-radius: 50%; font-size: 13px;
+    font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
+  .icon.met { background: var(--met-bg); color: var(--met-fg); }
+  .icon.not_met { background: var(--no-bg); color: var(--no-fg); }
+  .icon.unknown { background: var(--unk-bg); color: var(--unk-fg); }
+  .crit-body { flex: 1; }
+  .crit-head { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 10px; margin-bottom: 3px; }
+  .crit-text { font-weight: 600; font-size: 14px; margin: 0; }
+  .vlabel { flex: none; font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 999px; text-transform: uppercase; letter-spacing: .02em; }
+  .vlabel.met { background: var(--met-bg); color: var(--met-fg); }
+  .vlabel.not_met { background: var(--no-bg); color: var(--no-fg); }
+  .vlabel.unknown { background: var(--unk-bg); color: var(--unk-fg); }
+  .crit-rat { color: var(--muted); font-size: 13.5px; margin: 0; }
+  .crit-ev { font-size: 12.5px; color: var(--accent-dark); margin: 5px 0 0;
+    background: #f0fafd; border-radius: 7px; padding: 5px 9px; display: inline-block; }
+  .pipeline { color: var(--muted); font-size: 13.5px; border-top: 1px solid var(--line);
+    margin-top: 36px; padding-top: 18px; }
+  .pipeline b { color: var(--ink); }
+  .flow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .step-tag { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: 5px 10px; font-size: 12.5px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Eligibility decision-support</div>
+  <h1>Clinical Trial Matcher</h1>
+  <p class="lede">Paste a short patient summary. An AI agent retrieves candidate trials from
+    public ClinicalTrials.gov data and judges each eligibility criterion as met, not met, or
+    unknown, citing the evidence and abstaining when the summary doesn't say.</p>
+  <p class="audience"><b>Who it's for:</b> built as decision-support for clinicians and trial
+    coordinators screening patients. It deliberately flags what it can't verify, so a human
+    makes the call.</p>
+  <div class="disclaimer"><b>Prototype, not a clinical tool.</b> Built on public trial data for
+    demonstration. Do not enter real patient identifiers. Not for clinical decisions.</div>
+
+  <p class="label">Try a sample patient</p>
+  <div class="samples" id="samples"></div>
+
+  <p class="label">Or describe a patient</p>
+  <textarea id="patient" placeholder="e.g. 54-year-old man with stage IV BRAF V600E melanoma, on dabrafenib plus trametinib"></textarea>
+  <div class="actions">
+    <button class="go" id="go">Check eligibility</button>
+    <span class="hint">Runs the full agent about ~15-25 seconds.</span>
+  </div>
+
+  <section class="block">
+    <div class="status" id="status"></div>
+    <div class="error" id="error"></div>
+    <div id="results"></div>
+  </section>
+
+  <div class="pipeline">
+    <b>How it works.</b> Each request runs a self-correcting agent:
+    <div class="flow">
+      <span class="step-tag">1 · Analyze</span><span class="step-tag">2 · Retrieve trials</span>
+      <span class="step-tag">3 · Grade relevance</span><span class="step-tag">4 · Judge criteria</span>
+      <span class="step-tag">5 · Verify evidence</span>
+    </div>
+    <p style="margin:10px 0 0">A deterministic verification step downgrades any verdict that
+      isn't grounded in the patient summary. So, the model can't claim what it can't cite.</p>
+  </div>
+</main>
+
+<script>
+const SAMPLES = [
+  { label: "HER2+ breast cancer", text: "62-year-old postmenopausal woman with HER2-positive metastatic breast cancer, prior chemotherapy with docetaxel" },
+  { label: "Type 2 diabetes", text: "58-year-old woman with type 2 diabetes, HbA1c 8.2%, currently on metformin" },
+  { label: "NSCLC, PD-L1 high", text: "63-year-old woman with metastatic non-small cell lung cancer, PD-L1 80%, ALK-negative, no prior systemic therapy" },
+];
+const STEP_NODES = ["analyze", "retrieve", "grade", "generate", "verify"];
+const STEP_LABEL = { analyze: "Analyze patient summary", retrieve: "Retrieve candidate trials", grade: "Grade relevance", generate: "Judge eligibility criteria", verify: "Verify evidence" };
+const BADGE = { likely_eligible: ["eligible","Likely eligible"], needs_review: ["review","Needs review"], likely_ineligible: ["ineligible","Likely ineligible"] };
+const ICON = { met: "✓", not_met: "✗", unknown: "?" };
+const VLABEL = { met: "Met", not_met: "Not met", unknown: "Unknown" };
+
+const $ = (id) => document.getElementById(id);
+const samplesEl = $("samples"), patientEl = $("patient"), goEl = $("go");
+const statusEl = $("status"), errorEl = $("error"), resultsEl = $("results");
+
+SAMPLES.forEach(s => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.textContent = s.label;
+  b.onclick = () => { patientEl.value = s.text; patientEl.focus(); };
+  samplesEl.appendChild(b);
+});
+
+function escapeHtml(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+function startStatus() {
+  errorEl.style.display = "none"; resultsEl.innerHTML = ""; goEl.disabled = true;
+  statusEl.style.display = "block";
+  statusEl.innerHTML = '<div class="status-head">Running the agent…</div><div class="steps">' +
+    STEP_NODES.map(n => `<div class="stepitem" data-node="${n}"><span class="dot"></span><span>${STEP_LABEL[n]}</span></div>`).join("") +
+    '</div>';
+  setActive("analyze");
+}
+function setActive(node) { const el = statusEl.querySelector(`[data-node="${node}"]`); if (el) el.classList.add("active"); }
+function markDone(node) {
+  const el = statusEl.querySelector(`[data-node="${node}"]`);
+  if (el) { el.classList.remove("active"); el.classList.add("done"); el.querySelector(".dot").textContent = "✓"; }
+  const i = STEP_NODES.indexOf(node);
+  if (i >= 0 && i + 1 < STEP_NODES.length) setActive(STEP_NODES[i + 1]);
+}
+function stopStatus() { statusEl.style.display = "none"; goEl.disabled = false; }
+function showError(msg) { stopStatus(); errorEl.textContent = msg; errorEl.style.display = "block"; }
+
+function summaryHtml(matches) {
+  const c = { likely_eligible: 0, needs_review: 0, likely_ineligible: 0 };
+  matches.forEach(m => { c[m.overall] = (c[m.overall] || 0) + 1; });
+  const actionable = c.likely_eligible + c.needs_review;
+  return `<p class="summary"><b>${matches.length}</b> trials · <b>${actionable}</b> worth reviewing · <b>${c.likely_ineligible}</b> ruled out</p>`;
+}
+function legendHtml() {
+  return `<div class="legend">
+    <div class="legend-title">How to read this</div>
+    <div class="legend-row">
+      <span class="legend-item"><span class="icon met">✓</span> <b>Met</b> <span class="muted">— summary supports it</span></span>
+      <span class="legend-item"><span class="icon not_met">✗</span> <b>Not met</b> <span class="muted">— summary contradicts it</span></span>
+      <span class="legend-item"><span class="icon unknown">?</span> <b>Unknown</b> <span class="muted">— not stated; needs a human to check</span></span>
+    </div>
+    <div class="legend-row">
+      <span class="legend-item"><span class="badge ineligible">Likely ineligible</span> <span class="muted">a criterion is not met</span></span>
+      <span class="legend-item"><span class="badge review">Needs review</span> <span class="muted">some criteria unknown</span></span>
+      <span class="legend-item"><span class="badge eligible">Likely eligible</span> <span class="muted">all criteria met</span></span>
+    </div>
+  </div>`;
+}
+function renderTrial(t) {
+  const [cls, text] = BADGE[t.overall] || ["review", t.overall];
+  const crits = t.verdicts.map(v => `
+    <div class="crit">
+      <div class="icon ${v.verdict}">${ICON[v.verdict] || "?"}</div>
+      <div class="crit-body">
+        <div class="crit-head">
+          <p class="crit-text">${escapeHtml(v.criterion)}</p>
+          <span class="vlabel ${v.verdict}">${VLABEL[v.verdict] || v.verdict}</span>
+        </div>
+        <p class="crit-rat">${escapeHtml(v.rationale)}</p>
+        ${v.patient_evidence ? `<span class="crit-ev">Evidence: ${escapeHtml(v.patient_evidence)}</span>` : ""}
+      </div>
+    </div>`).join("");
+  return `<div class="trial">
+    <div class="trial-head">
+      <div>
+        <p class="trial-title">${escapeHtml(t.title)}</p>
+        <span class="nct"><a href="https://clinicaltrials.gov/study/${encodeURIComponent(t.nct_id)}" target="_blank" rel="noopener">${escapeHtml(t.nct_id)} ↗</a></span>
+      </div>
+      <span class="badge ${cls}">${text}</span>
+    </div>
+    ${crits}
+  </div>`;
+}
+function renderResults(matches) {
+  stopStatus();
+  if (!matches || !matches.length) { showError("No candidate trials found."); return; }
+  resultsEl.innerHTML = summaryHtml(matches) + legendHtml() + matches.map(renderTrial).join("");
+}
+
+function handleEvent(evt) {
+  if (evt.type === "step") markDone(evt.node);
+  else if (evt.type === "error") showError(evt.reason || "Request was rejected.");
+  else if (evt.type === "done") renderResults(evt.matches);
+}
+
+async function run() {
+  const patient = patientEl.value.trim();
+  if (patient.length < 10) { showError("Please enter a longer patient summary."); return; }
+  startStatus();
+  try {
+    const res = await fetch("/match/stream", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ patient }),
+    });
+    if (!res.ok) {
+      let reason = "Request was rejected.";
+      try { const d = await res.json(); reason = d?.detail?.[0]?.msg || d?.detail?.reason || reason; } catch (e) {}
+      showError(reason); return;
+    }
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let idx;
+      while ((idx = buffer.indexOf("\n\n")) >= 0) {
+        const raw = buffer.slice(0, idx); buffer = buffer.slice(idx + 2);
+        if (raw.startsWith("data:")) handleEvent(JSON.parse(raw.slice(5).trim()));
+      }
+    }
+  } catch (e) {
+    showError("Something went wrong reaching the server.");
+  }
+}
+goEl.onclick = run;
+</script>
+</body>
+</html>

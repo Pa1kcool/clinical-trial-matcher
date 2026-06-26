@@ -1,8 +1,4 @@
-"""Typed application settings, loaded once from environment / .env.
-
-Using pydantic-settings instead of scattered os.getenv calls is the real-world
-pattern: one validated, typed, importable source of truth for configuration.
-"""
+"""Typed application settings, loaded once from environment / .env."""
 
 from __future__ import annotations
 
@@ -22,6 +18,10 @@ class Settings(BaseSettings):
     embed_model: str = "NeuML/pubmedbert-base-embeddings"
     embed_dim: int = 768
     reranker_model: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+    # Reasoning models: strong for judgment, cheap for the light steps.
+    model: str = "claude-sonnet-4-6"
+    cheap_model: str = "claude-haiku-4-5-20251001"
 
     anthropic_api_key: str | None = None
     langfuse_public_key: str | None = None

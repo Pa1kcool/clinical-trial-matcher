@@ -1,0 +1,710 @@
+[
+  {
+    "patient": "62-year-old postmenopausal woman with HER2-positive metastatic breast cancer, prior chemotherapy with docetaxel.",
+    "criteria": [
+      {
+        "text": "Postmenopausal women",
+        "gold": "met"
+      },
+      {
+        "text": "HER2-positive disease confirmed",
+        "gold": "met"
+      },
+      {
+        "text": "Requires HER2-negative breast cancer",
+        "gold": "not_met"
+      },
+      {
+        "text": "Requires triple-negative breast cancer",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior taxane chemotherapy",
+        "gold": "met"
+      },
+      {
+        "text": "Prior trastuzumab (anti-HER2) therapy",
+        "gold": "unknown"
+      },
+      {
+        "text": "ECOG performance status 0 to 1",
+        "gold": "unknown"
+      },
+      {
+        "text": "Adequate renal function, creatinine clearance >= 60",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "45-year-old man with metastatic colorectal cancer, no prior systemic therapy.",
+    "criteria": [
+      {
+        "text": "Female participants only",
+        "gold": "not_met"
+      },
+      {
+        "text": "Age 18 years or older",
+        "gold": "met"
+      },
+      {
+        "text": "Metastatic colorectal cancer",
+        "gold": "met"
+      },
+      {
+        "text": "No prior systemic therapy for metastatic disease",
+        "gold": "met"
+      },
+      {
+        "text": "Measurable disease per RECIST 1.1",
+        "gold": "unknown"
+      },
+      {
+        "text": "Adequate hepatic function",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "6-year-old child with newly diagnosed acute lymphoblastic leukemia.",
+    "criteria": [
+      {
+        "text": "Age 18 years or older",
+        "gold": "not_met"
+      },
+      {
+        "text": "Pediatric patients (under 18) eligible",
+        "gold": "met"
+      },
+      {
+        "text": "Diagnosis of acute lymphoblastic leukemia",
+        "gold": "met"
+      },
+      {
+        "text": "Adequate organ function",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "58-year-old woman with type 2 diabetes, HbA1c 8.2%, currently on metformin.",
+    "criteria": [
+      {
+        "text": "Diagnosis of type 2 diabetes mellitus",
+        "gold": "met"
+      },
+      {
+        "text": "HbA1c between 7.0% and 10.0%",
+        "gold": "met"
+      },
+      {
+        "text": "HbA1c below 6.5%",
+        "gold": "not_met"
+      },
+      {
+        "text": "Currently treated with metformin",
+        "gold": "met"
+      },
+      {
+        "text": "Currently using insulin",
+        "gold": "unknown"
+      },
+      {
+        "text": "Estimated GFR at least 45 mL/min",
+        "gold": "unknown"
+      },
+      {
+        "text": "Age 18 to 75 years",
+        "gold": "met"
+      }
+    ]
+  },
+  {
+    "patient": "70-year-old man with atrial fibrillation on warfarin, history of prior stroke.",
+    "criteria": [
+      {
+        "text": "Diagnosis of atrial fibrillation",
+        "gold": "met"
+      },
+      {
+        "text": "History of stroke or transient ischemic attack",
+        "gold": "met"
+      },
+      {
+        "text": "Currently on oral anticoagulation",
+        "gold": "met"
+      },
+      {
+        "text": "Age 65 years or older",
+        "gold": "met"
+      },
+      {
+        "text": "Unable to take oral anticoagulation (exclusion)",
+        "gold": "not_met"
+      },
+      {
+        "text": "Currently pregnant (exclusion)",
+        "gold": "not_met"
+      },
+      {
+        "text": "Left ventricular ejection fraction below 40%",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "34-year-old woman, 12 weeks pregnant, with moderate persistent asthma.",
+    "criteria": [
+      {
+        "text": "Female participants",
+        "gold": "met"
+      },
+      {
+        "text": "Pregnant or breastfeeding (exclusion)",
+        "gold": "met"
+      },
+      {
+        "text": "Non-pregnant women only",
+        "gold": "not_met"
+      },
+      {
+        "text": "Diagnosis of asthma",
+        "gold": "met"
+      },
+      {
+        "text": "Age 18 to 65 years",
+        "gold": "met"
+      },
+      {
+        "text": "Prior biologic therapy for asthma",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "52-year-old man with EGFR-mutant non-small cell lung cancer, prior osimertinib.",
+    "criteria": [
+      {
+        "text": "Non-small cell lung cancer",
+        "gold": "met"
+      },
+      {
+        "text": "EGFR activating mutation present",
+        "gold": "met"
+      },
+      {
+        "text": "EGFR wild-type (no EGFR mutation) required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior EGFR tyrosine kinase inhibitor",
+        "gold": "met"
+      },
+      {
+        "text": "Prior immunotherapy",
+        "gold": "unknown"
+      },
+      {
+        "text": "Measurable disease per RECIST 1.1",
+        "gold": "unknown"
+      },
+      {
+        "text": "ECOG performance status 0 to 2",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "48-year-old woman with stage III triple-negative breast cancer, no distant metastases.",
+    "criteria": [
+      {
+        "text": "Triple-negative breast cancer",
+        "gold": "met"
+      },
+      {
+        "text": "HER2-positive disease required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Metastatic (stage IV) disease required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Hormone-receptor positive disease required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Female participants",
+        "gold": "met"
+      },
+      {
+        "text": "Known BRCA mutation status",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "65-year-old man with metastatic prostate cancer, currently on androgen deprivation therapy.",
+    "criteria": [
+      {
+        "text": "Metastatic prostate cancer",
+        "gold": "met"
+      },
+      {
+        "text": "Male participants",
+        "gold": "met"
+      },
+      {
+        "text": "Currently on androgen deprivation therapy",
+        "gold": "met"
+      },
+      {
+        "text": "Castration-resistant disease",
+        "gold": "unknown"
+      },
+      {
+        "text": "Prior chemotherapy for prostate cancer",
+        "gold": "unknown"
+      },
+      {
+        "text": "ECOG performance status 0 to 1",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "29-year-old woman with rheumatoid arthritis and inadequate response to methotrexate.",
+    "criteria": [
+      {
+        "text": "Diagnosis of rheumatoid arthritis",
+        "gold": "met"
+      },
+      {
+        "text": "Inadequate response to methotrexate",
+        "gold": "met"
+      },
+      {
+        "text": "Age 18 years or older",
+        "gold": "met"
+      },
+      {
+        "text": "Prior biologic DMARD therapy",
+        "gold": "unknown"
+      },
+      {
+        "text": "Active tuberculosis (exclusion)",
+        "gold": "unknown"
+      },
+      {
+        "text": "Adequate contraception if of childbearing potential",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "80-year-old woman with heart failure and reduced ejection fraction (LVEF 30%).",
+    "criteria": [
+      {
+        "text": "Diagnosis of heart failure",
+        "gold": "met"
+      },
+      {
+        "text": "Left ventricular ejection fraction 40% or below",
+        "gold": "met"
+      },
+      {
+        "text": "Left ventricular ejection fraction 50% or above required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Age 18 years or older",
+        "gold": "met"
+      },
+      {
+        "text": "NYHA functional class II to III",
+        "gold": "unknown"
+      },
+      {
+        "text": "Currently on a beta-blocker",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "54-year-old man with stage IV BRAF V600E-mutant melanoma, currently on dabrafenib plus trametinib.",
+    "criteria": [
+      {
+        "text": "Histologically confirmed melanoma",
+        "gold": "met"
+      },
+      {
+        "text": "BRAF V600 activating mutation present",
+        "gold": "met"
+      },
+      {
+        "text": "BRAF wild-type tumor required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Has received BRAF and/or MEK inhibitor therapy",
+        "gold": "met"
+      },
+      {
+        "text": "Prior immune checkpoint inhibitor",
+        "gold": "unknown"
+      },
+      {
+        "text": "No active brain metastases",
+        "gold": "unknown"
+      },
+      {
+        "text": "No other active malignancy in the prior 3 years",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "61-year-old woman with high-grade serous ovarian cancer, germline BRCA1 mutation, platinum-sensitive relapse after first-line carboplatin.",
+    "criteria": [
+      {
+        "text": "High-grade serous ovarian carcinoma",
+        "gold": "met"
+      },
+      {
+        "text": "Germline BRCA1 or BRCA2 mutation",
+        "gold": "met"
+      },
+      {
+        "text": "BRCA wild-type required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Platinum-sensitive disease",
+        "gold": "met"
+      },
+      {
+        "text": "At least one prior line of platinum-based therapy",
+        "gold": "met"
+      },
+      {
+        "text": "Prior PARP inhibitor therapy",
+        "gold": "unknown"
+      },
+      {
+        "text": "Measurable disease per RECIST 1.1",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "68-year-old man with relapsed multiple myeloma after lenalidomide and bortezomib.",
+    "criteria": [
+      {
+        "text": "Diagnosis of multiple myeloma",
+        "gold": "met"
+      },
+      {
+        "text": "Relapsed or refractory disease",
+        "gold": "met"
+      },
+      {
+        "text": "At least one prior line of therapy",
+        "gold": "met"
+      },
+      {
+        "text": "Lenalidomide-naive required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior anti-CD38 monoclonal antibody (e.g., daratumumab)",
+        "gold": "unknown"
+      },
+      {
+        "text": "Adequate bone marrow reserve",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "72-year-old woman with chronic lymphocytic leukemia harboring del(17p), progressed on ibrutinib.",
+    "criteria": [
+      {
+        "text": "Diagnosis of chronic lymphocytic leukemia",
+        "gold": "met"
+      },
+      {
+        "text": "Del(17p) or TP53 aberration",
+        "gold": "met"
+      },
+      {
+        "text": "Prior BTK inhibitor therapy",
+        "gold": "met"
+      },
+      {
+        "text": "Treatment-naive (no prior therapy) required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior venetoclax therapy",
+        "gold": "unknown"
+      },
+      {
+        "text": "Absolute neutrophil count at least 1000/\u00b5L",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "63-year-old woman with metastatic non-small cell lung cancer, PD-L1 tumor proportion score 80%, ALK-negative, no prior systemic therapy.",
+    "criteria": [
+      {
+        "text": "Metastatic non-small cell lung cancer",
+        "gold": "met"
+      },
+      {
+        "text": "PD-L1 expression at least 50%",
+        "gold": "met"
+      },
+      {
+        "text": "ALK rearrangement present required",
+        "gold": "not_met"
+      },
+      {
+        "text": "No prior systemic therapy for metastatic disease",
+        "gold": "met"
+      },
+      {
+        "text": "Known EGFR mutation status",
+        "gold": "unknown"
+      },
+      {
+        "text": "No history of interstitial lung disease",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "59-year-old man with metastatic pancreatic adenocarcinoma, ECOG performance status 1, after first-line FOLFIRINOX.",
+    "criteria": [
+      {
+        "text": "Metastatic pancreatic adenocarcinoma",
+        "gold": "met"
+      },
+      {
+        "text": "ECOG performance status 0 to 1",
+        "gold": "met"
+      },
+      {
+        "text": "ECOG performance status 0 only",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior fluorouracil-based chemotherapy",
+        "gold": "met"
+      },
+      {
+        "text": "Treatment-naive in the metastatic setting required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Known germline BRCA mutation",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "66-year-old man with HER2-positive metastatic gastric adenocarcinoma.",
+    "criteria": [
+      {
+        "text": "HER2-positive gastric or gastroesophageal adenocarcinoma",
+        "gold": "met"
+      },
+      {
+        "text": "HER2-negative disease required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Metastatic gastric adenocarcinoma",
+        "gold": "met"
+      },
+      {
+        "text": "Prior trastuzumab therapy",
+        "gold": "unknown"
+      },
+      {
+        "text": "Measurable or evaluable disease",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "57-year-old man with metastatic clear cell renal cell carcinoma, prior nephrectomy, treatment-naive for metastatic disease.",
+    "criteria": [
+      {
+        "text": "Clear cell renal cell carcinoma",
+        "gold": "met"
+      },
+      {
+        "text": "Prior nephrectomy",
+        "gold": "met"
+      },
+      {
+        "text": "No prior systemic therapy for metastatic disease",
+        "gold": "met"
+      },
+      {
+        "text": "Non-clear-cell histology required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Karnofsky performance status at least 70",
+        "gold": "unknown"
+      },
+      {
+        "text": "No untreated brain metastases",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "60-year-old man with hepatocellular carcinoma, Child-Pugh class A cirrhosis, chronic hepatitis B.",
+    "criteria": [
+      {
+        "text": "Hepatocellular carcinoma",
+        "gold": "met"
+      },
+      {
+        "text": "Child-Pugh class A liver function",
+        "gold": "met"
+      },
+      {
+        "text": "Child-Pugh class B or C required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Chronic hepatitis B infection",
+        "gold": "met"
+      },
+      {
+        "text": "Prior systemic therapy for HCC",
+        "gold": "unknown"
+      },
+      {
+        "text": "Platelet count at least 75,000/\u00b5L",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "50-year-old woman with newly diagnosed glioblastoma, MGMT promoter methylated, status post gross total resection.",
+    "criteria": [
+      {
+        "text": "Histologically confirmed glioblastoma",
+        "gold": "met"
+      },
+      {
+        "text": "MGMT promoter methylation",
+        "gold": "met"
+      },
+      {
+        "text": "MGMT unmethylated required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior surgical resection or biopsy",
+        "gold": "met"
+      },
+      {
+        "text": "Prior cranial radiotherapy",
+        "gold": "unknown"
+      },
+      {
+        "text": "Karnofsky performance status at least 60",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "31-year-old woman with moderately-to-severely active Crohn's disease and inadequate response to infliximab.",
+    "criteria": [
+      {
+        "text": "Diagnosis of Crohn's disease",
+        "gold": "met"
+      },
+      {
+        "text": "Moderately to severely active disease",
+        "gold": "met"
+      },
+      {
+        "text": "Prior anti-TNF therapy",
+        "gold": "met"
+      },
+      {
+        "text": "Anti-TNF-naive required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior vedolizumab or ustekinumab",
+        "gold": "unknown"
+      },
+      {
+        "text": "No active or latent tuberculosis",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "40-year-old man with moderate-to-severe plaque psoriasis, body surface area 15%.",
+    "criteria": [
+      {
+        "text": "Diagnosis of plaque psoriasis",
+        "gold": "met"
+      },
+      {
+        "text": "Body surface area involvement at least 10%",
+        "gold": "met"
+      },
+      {
+        "text": "Body surface area under 5% required",
+        "gold": "not_met"
+      },
+      {
+        "text": "Prior biologic therapy for psoriasis",
+        "gold": "unknown"
+      },
+      {
+        "text": "No active serious infection",
+        "gold": "unknown"
+      }
+    ]
+  },
+  {
+    "patient": "38-year-old man living with HIV, CD4 count 520 cells/\u00b5L, on antiretroviral therapy with an undetectable viral load.",
+    "criteria": [
+      {
+        "text": "People living with HIV are eligible",
+        "gold": "met"
+      },
+      {
+        "text": "CD4 count at least 350 cells/\u00b5L",
+        "gold": "met"
+      },
+      {
+        "text": "CD4 count below 200 cells/\u00b5L required",
+        "gold": "not_met"
+      },
+      {
+        "text": "On stable antiretroviral therapy",
+        "gold": "met"
+      },
+      {
+        "text": "Undetectable HIV viral load",
+        "gold": "met"
+      },
+      {
+        "text": "No prior AIDS-defining opportunistic infection",
+        "gold": "unknown"
+      }
+    ]
+  }
+]

@@ -80,8 +80,10 @@ class HybridRetriever:
 
     def dense_search(self, query: str, k: int) -> list[str]:
         vector = self.embedder.encode(query, normalize_embeddings=True).tolist()
-        hits = self.client.search(collection_name=settings.collection, query_vector=vector, limit=k)
-        return [str(h.id) for h in hits]
+        result = self.client.query_points(
+            collection_name=settings.collection, query=vector, limit=k
+        )
+        return [str(p.id) for p in result.points]
 
     def bm25_search(self, query: str, k: int) -> list[str]:
         scores = self._bm25.get_scores(query.lower().split())
