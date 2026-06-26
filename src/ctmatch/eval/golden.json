@@ -7,6 +7,10 @@
         "gold": "met"
       },
       {
+        "text": "Postmenopausal status, defined as age 60 years or older",
+        "gold": "met"
+      },
+      {
         "text": "HER2-positive disease confirmed",
         "gold": "met"
       },
