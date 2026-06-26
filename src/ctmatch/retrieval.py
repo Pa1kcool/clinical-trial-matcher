@@ -52,7 +52,7 @@ class HybridRetriever:
         from qdrant_client import QdrantClient
         from sentence_transformers import SentenceTransformer
 
-        self.client = QdrantClient(url=settings.qdrant_url)
+        self.client = QdrantClient(url=settings.qdrant_url, api_key=settings.qdrant_api_key)
         self.embedder = SentenceTransformer(settings.embed_model)
         self._reranker: CrossEncoder | None = None
         self._load_corpus()

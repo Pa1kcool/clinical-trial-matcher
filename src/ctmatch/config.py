@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     )
 
     qdrant_url: str = "http://localhost:6333"
+    qdrant_api_key: str | None = None
     collection: str = "clinical_trials"
 
     embed_model: str = "NeuML/pubmedbert-base-embeddings"

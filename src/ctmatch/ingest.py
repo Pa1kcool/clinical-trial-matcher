@@ -100,8 +100,10 @@ def ingest(conditions: list[str] | None = None) -> int:
         normalize_embeddings=True,
     )
 
-    client = QdrantClient(url=settings.qdrant_url)
-    client.recreate_collection(
+    client = QdrantClient(url=settings.qdrant_url, api_key=settings.qdrant_api_key)
+    if client.collection_exists(settings.collection):
+        client.delete_collection(settings.collection)
+    client.create_collection(
         collection_name=settings.collection,
         vectors_config=VectorParams(size=settings.embed_dim, distance=Distance.COSINE),
     )
