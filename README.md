@@ -18,15 +18,18 @@ and the agent retrieves real trials, then goes criterion by criterion and tells 
 
 The thing I care about most: when the summary is silent on a criterion, the agent says **unknown** instead of guessing. For a tool that touches eligibility, a confident wrong answer is worse than an honest "needs a human to check."
 
-## Screenshots
+## Demo
+![App Demo](docs/ctmatch.mp4)
 
-_Add these after you take them. Suggested shots:_
+## Screenshots
 
 ![The demo page with a result](docs/screenshot-results.png)
 
 ![The live step-by-step progress](docs/screenshot-progress.png)
 
-![Langfuse trace of one match](docs/screenshot-langfuse.png)
+![Langfuse Dashboards](docs/screenshot-langfuse.png)
+
+![Langfuse Latency](docs/screenshot-langfusel.png)
 
 ## Who it is for
 
