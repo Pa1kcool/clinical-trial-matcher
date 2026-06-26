@@ -13,6 +13,8 @@ An AI agent that reads a patient summary, finds candidate clinical trials, and j
 
 **Live demo:** https://pavankumarkundeti-clinical-trial-matcher.hf.space
 
+> Note: the demo runs on a paid API, so the key is disabled when I am not actively sharing it. If you hit an authentication error, the app is fine, the key is just off. See the demo video below for a full walkthrough, or clone the repo and run it yourself in a few minutes (instructions under "Run it yourself").
+
 > Decision-support prototype built on public ClinicalTrials.gov data. It is not a clinical tool and should not be used for real medical decisions.
 
 ---
@@ -30,19 +32,11 @@ The thing I care about most: when the summary is silent on a criterion, the agen
 ## Demo
 
 
-https://github.com/user-attachments/assets/c4a41299-e044-43f4-a74d-901b74e95047
+https://github.com/user-attachments/assets/fea18a56-1a29-4136-92f0-e3606c003914
 
 
 
-## Screenshots
 
-![The live step-by-step progress](docs/screenshot-progress.png)
-
-![The demo page with a result](docs/screenshot-results.png)
-
-![Langfuse Dashboards](docs/screenshot-langfuse.png)
-
-![Langfuse Latency](docs/screenshot-langfusel.png)
 
 
 ## Who it is for
