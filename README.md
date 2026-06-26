@@ -23,9 +23,9 @@ The thing I care about most: when the summary is silent on a criterion, the agen
 
 ## Screenshots
 
-![The demo page with a result](docs/screenshot-results.png)
-
 ![The live step-by-step progress](docs/screenshot-progress.png)
+
+![The demo page with a result](docs/screenshot-results.png)
 
 ![Langfuse Dashboards](docs/screenshot-langfuse.png)
 
