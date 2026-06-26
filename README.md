@@ -31,28 +31,98 @@ The thing I care about most: when the summary is silent on a criterion, the agen
 
 ![Langfuse Latency](docs/screenshot-langfusel.png)
 
+
 ## Who it is for
 
 The intended user is a clinician or clinical research coordinator screening patients for trials. The whole design assumes a human in the loop: the agent does the tedious first pass and flags everything it can't verify, and a person makes the actual call.
 
-## How it works
+## Architecture & How it works
 
-Each request runs a small self-correcting agent built with LangGraph:
+At a high level the system has two stages working back to back: a **retrieval stage** that narrows thousands of trials down to a handful of candidates, and a **reasoning stage** that judges those candidates criterion by criterion. A deterministic safety gate and a ranking step sit at the end. The diagram below traces a single request from the patient summary to the ranked result.
 
 ```
-analyze -> retrieve -> grade -(relevant)-> generate -> verify -> rank
-                          ^
-                          |-(too narrow)- broaden -|
+                          PATIENT SUMMARY (free text)
+                                     |
+                                     v
+                        +------------------------+
+                        |   INPUT GUARDRAILS     |   reject prompt injection,
+                        |  injection/PII/clinical|   personal identifiers, and
+                        +------------------------+   non-clinical input
+                                     |
+        ================ RETRIEVAL STAGE ================
+                                     v
+                        +------------------------+
+                        |   analyze  (Haiku)     |   summary -> search keywords
+                        +------------------------+
+                                     |
+                                     v
+              +-------------------------------------------+
+              |            retrieve (no LLM)              |
+              |  BM25 keyword  +  PubMedBERT dense vector |
+              |        \                /                 |
+              |     Reciprocal Rank Fusion (k=60)         |
+              |                 |                         |
+              |     cross-encoder re-rank -> top K        |
+              +-------------------------------------------+
+                                     |
+                                     v
+                        +------------------------+      not relevant, < 2 retries
+                        |    grade  (Haiku)      |---------------------+
+                        +------------------------+                     |
+                                     | relevant                        v
+                                     |                      +---------------------+
+                                     |                      |  broaden  (Haiku)   |
+                                     |                      |  widen keywords,    |
+                                     |<---------------------|  retry retrieval    |
+                                     |   (loops back)       +---------------------+
+        ================ REASONING STAGE ================
+                                     v
+              +-------------------------------------------+
+              |           generate  (Sonnet)              |
+              |  for each trial, judge EVERY criterion:   |
+              |  met / not_met / unknown + rationale +    |
+              |  cited patient_evidence                   |
+              |  (forced JSON via tool schema;            |
+              |   trials judged in parallel)              |
+              +-------------------------------------------+
+                                     |
+                                     v
+                        +------------------------+      downgrade any met/not_met
+                        |   verify (no LLM)      |      with no cited evidence
+                        |  groundedness gate     |      back to "unknown"
+                        +------------------------+
+                                     |
+                                     v
+                        +------------------------+      likely_eligible >
+                        |   rank (no LLM)        |      needs_review >
+                        |  order by eligibility  |      likely_ineligible
+                        +------------------------+
+                                     |
+                                     v
+                         RANKED, GROUNDED RESULT
+                    (per-criterion verdicts + evidence)
 ```
 
-1. **analyze** turns the free text into search keywords (cheap model).
-2. **retrieve** pulls candidate trials using hybrid search: BM25 keyword matching plus PubMedBERT dense vectors, fused with Reciprocal Rank Fusion, then re-ranked with a cross-encoder.
-3. **grade** checks whether the retrieved trials are actually relevant. If they look too narrow, the agent loops back and broadens the search (up to twice) before giving up.
-4. **generate** judges every criterion of every trial (strong model), and is forced to return structured output through a tool schema so the answer is always valid JSON in the exact shape I want.
-5. **verify** is plain Python, not a model. It downgrades any "met" or "not met" that has no supporting patient evidence back to "unknown." The model cannot talk its way past this gate.
-6. **rank** sorts trials so the actionable ones come first.
+### How to read the diagram
 
-Two model sizes are used on purpose: a cheap fast model (Haiku) for the light steps, a stronger model (Sonnet) for the actual judgment. That keeps cost down without hurting quality, and I have the eval numbers to back that up.
+The request flows top to bottom. Two of the boxes are not language-model calls at all, and that is deliberate: `retrieve`, `verify`, and `rank` are plain code. The expensive thinking happens only where it has to.
+
+**Input guardrails.** Before anything runs, the patient text is screened. Obvious prompt-injection attempts, personal identifiers, and text with no clinical signal are turned away with a clear message. This is a first line of defense, not a guarantee, and it is paired with the structural safety checks further down.
+
+**Retrieval stage (analyze, retrieve, grade, broaden).** A cheap, fast model turns the free-text summary into search keywords. Retrieval then runs two searches in parallel: classic BM25 keyword matching catches exact terms like a drug name, while PubMedBERT dense vectors catch meaning even when the wording differs. Their two ranked lists are merged with Reciprocal Rank Fusion, and a cross-encoder re-ranker takes a final, more careful pass to order the top candidates. A grader then asks whether those candidates are actually relevant. If they look too narrow, the agent loops back, broadens the search, and tries again, up to twice. This loop is what makes it an agent rather than a one-shot pipeline.
+
+**Reasoning stage (generate).** The strong model now does the real work: for each candidate trial, it judges every eligibility criterion as met, not met, or unknown, writes a short rationale, and quotes the exact patient fact it relied on. Two design choices matter here. The model is forced to answer through a tool schema, so the output is always valid, correctly shaped data instead of free text that has to be parsed. And the trials are judged in parallel rather than one after another, which is what brought a full match down from about 58 seconds to about 20.
+
+**Safety gate (verify).** This step uses no model. It walks every verdict and downgrades any "met" or "not met" that has no cited patient evidence back to "unknown." Because it is plain code, the model cannot talk its way past it. This is the structural backbone of the abstention guarantee: a confident answer with nothing to support it simply cannot survive.
+
+**Ranking.** Finally the trials are ordered so the actionable ones (likely eligible, then needs review) sit on top and the ruled-out ones sink to the bottom, still visible with their reasoning so a reviewer can see why. This mirrors the aggregation-and-ranking stage of the reference system, NIH's TrialGPT.
+
+### Why this shape
+
+The core idea is to spend model capability where judgment is needed and to keep everything safety-critical in deterministic code. Retrieval narrows the problem cheaply. A small model handles the easy framing steps. A strong model handles the one genuinely hard task, judging eligibility. And the two things that must never be wishy-washy, grounding a claim in evidence and abstaining when evidence is missing, are enforced by code that has no opinion and cannot be persuaded. That separation is what lets the system be both useful and honest about what it does not know.
+
+
+
 
 ## What makes it more than a RAG demo
 
