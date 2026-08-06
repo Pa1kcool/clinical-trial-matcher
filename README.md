@@ -1,6 +1,4 @@
----
 
----
 # Clinical Trial Matcher
 
 An AI agent that reads a patient summary, finds candidate clinical trials, and judges each eligibility criterion as **met**, **not met**, or **unknown**, with the evidence it used and an honest "I don't know" when the summary doesn't say.
